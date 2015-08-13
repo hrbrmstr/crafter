@@ -1,4 +1,12 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+    __________________________oooo__oo____________________
+    _ooooo__oo_ooo___ooooo___oo_____oo_____ooooo__oo_ooo__
+    oo___oo_ooo___o_oo___oo_ooooo__oooo___oo____o_ooo___o_
+    oo______oo______oo___oo_oo______oo____ooooooo_oo______
+    oo______oo______oo___oo_oo______oo__o_oo______oo______
+    _ooooo__oo_______oooo_o_oo_______ooo___ooooo__oo______
+    ______________________________________________________
+
 crafter is eventually going to be a R pacakge to work with PCAP dumps
 
 Life's too short to export to CSV/XML. There's no reason R should not be able to read binary PCAP data.
@@ -40,7 +48,7 @@ library(crafter)
 library(testthat)
 
 date()
-#> [1] "Thu Aug 13 16:36:12 2015"
+#> [1] "Thu Aug 13 17:00:10 2015"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================
