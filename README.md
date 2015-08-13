@@ -1,6 +1,4 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/hrbrmstr/crafter.svg)](https://travis-ci.org/hrbrmstr/crafter) ![Project Status: Concept - Minimal or no implementation has been done yet.](http://www.repostatus.org/badges/0.1.0/concept.svg)](<http://www.repostatus.org/#concept>) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/crafter)](http://cran.r-project.org/web/packages/crafter) ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/crafter)
-
 crafter is eventually going to be a R pacakge to work with PCAP dumps
 
 Life's too short to export to CSV/XML. There's no reason R should not be able to read binary PCAP data.
@@ -42,7 +40,7 @@ library(crafter)
 library(testthat)
 
 date()
-#> [1] "Thu Aug 13 16:32:51 2015"
+#> [1] "Thu Aug 13 16:34:30 2015"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================
