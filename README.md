@@ -13,7 +13,7 @@ Life's too short to export to CSV/XML. There's no reason R should not be able to
 
 [What is a PCAP?](https://en.wikipedia.org/wiki/Pcap)
 
-You need the [crafter C++ library](https://github.com/pellegre/libcrafter), which lists the other dependencies.
+You need the [crafter C++ library](https://github.com/pellegre/libcrafter) installed and their site lists the other dependencies.
 
 If there's any hope for this to run on Windows (`libcrafter` supports Windows) it will be due to a Windows + (prbly some infosec) + `#rstats` person tagging along on this project.
 
@@ -159,7 +159,7 @@ library(crafter)
 library(testthat)
 
 date()
-#> [1] "Fri Aug 14 16:24:07 2015"
+#> [1] "Fri Aug 14 16:28:49 2015"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================
