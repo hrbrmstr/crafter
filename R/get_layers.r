@@ -1,4 +1,4 @@
-go_get_ip_layer <- function(pcap) {
+go_get_ip_layer <- function(pcap, first_packet) {
 
   ip <- get_ip_layer(pcap)
 
@@ -7,7 +7,7 @@ go_get_ip_layer <- function(pcap) {
 
   ip <- arrange(ip, tv_sec, tv_usec)
 
-  ip$time <- c(0, diff(ip$tv_sec + (ip$tv_usec/1000000)))
+  ip$time <- (ip$tv_sec + (ip$tv_usec/1000000)) - (first_packet$tv_sec + (first_packet$tv_usec/1000000))
 
   ip[,c("tv_sec", "tv_usec", "time", "src", "dst", "protocol", "protocol_name",
         "size", "header_len", "total_len", "ttl",

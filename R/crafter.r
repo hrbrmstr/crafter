@@ -27,15 +27,19 @@ read_pcap <- function(capture_file, filter="") {
     packet_info <- function() {
       dat <- get_packet_info(private$pcap)
       dat$protocols <- sapply(str_split(dat$protocols, ","), function(x) paste0(sort(unique(x)), collapse=","))
-      arrange(dat, tv_sec, tv_usec)
+      dat <- arrange(dat, tv_sec, tv_usec)
+      dat$time <- (dat$tv_sec + (dat$tv_usec/1000000)) - (dat[1,]$tv_sec + (dat[1,]$tv_usec/1000000))
+      dat[,c("tv_sec", "tv_usec", "time", "layer_count", "protocols", "packet_size")]
     }
 
+    first_packet <- packet_info()[1,]
+
     #' @describeIn get_layer retrieve a specific layer type
-    get_layer <- function(layer_name=c("Ethernet", "IP", "TCP")) {
+    get_layer <- function(layer_name=c("Ethernet", "IP", "TCP", "TCPOptionMaxSegSize", "TCPOptionPad", "TCPOptionSACKPermitted")) {
       switch(layer_name,
-             Ethernet=get_ethernet_layer(private$pcap),
-             IP=go_get_ip_layer(private$pcap),
-             TCP=get_tcp_layer(private$pcap),
+#             Ethernet=get_ethernet_layer(private$pcap),
+#             TCP=get_tcp_layer(private$pcap),
+             IP=go_get_ip_layer(private$pcap, first_packet),
              stop(sprintf("'%s' decoding not implemented yet", layer_name)))
     }
 
@@ -43,13 +47,12 @@ read_pcap <- function(capture_file, filter="") {
     summary <- function() {
 
       pkts <- packet_info()
-
       first <- pkts[1,]
       last <- pkts[nrow(pkts),]
 
       pktfil <- file.info(filename)
 
-      ts <- (last$tv_sec-first$tv_sec) + ((last$tv_usec-first$tv_usec)/1000000)
+      ts <- (last$tv_sec - first$tv_sec) + ((last$tv_usec - first$tv_usec)/1000000)
 
       cat(red("File\n"))
       cat(sprintf(" Capture file  : %s\n", filename))
