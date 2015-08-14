@@ -17,6 +17,11 @@ You need the [crafter C++ library](https://github.com/pellegre/libcrafter) insta
 
 If there's any hope for this to run on Windows (`libcrafter` supports Windows) it will be due to a Windows + (prbly some infosec) + `#rstats` person tagging along on this project.
 
+You can find some sample PCAP files:
+
+-   [Netresec](https://wiki.wireshark.org/SampleCaptures)
+-   [Wireshark](https://wiki.wireshark.org/SampleCaptures)
+
 The following functions are implemented:
 
 -   `read_pcap`: Read in a packet capture file
@@ -159,7 +164,7 @@ library(crafter)
 library(testthat)
 
 date()
-#> [1] "Fri Aug 14 16:28:49 2015"
+#> [1] "Fri Aug 14 16:31:39 2015"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================
