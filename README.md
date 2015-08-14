@@ -27,6 +27,8 @@ The following functions are implemented:
 -   `read_pcap`: Read in a packet capture file
 -   `summary.crafter`: Print summary info about a packet capture
 
+(There are actually more but they're inside the pcap object and I just need to get them exposed. See the example below for usage.)
+
 ### News
 
 -   Version 0.1.0.9000 : very basic functionality!
@@ -164,7 +166,7 @@ library(crafter)
 library(testthat)
 
 date()
-#> [1] "Fri Aug 14 16:31:39 2015"
+#> [1] "Fri Aug 14 16:34:11 2015"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================
