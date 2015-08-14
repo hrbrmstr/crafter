@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
     _ooooo__oo_______oooo_o_oo_______ooo___ooooo__oo______
     ______________________________________________________
     
-crafter is eventually going to be a R pacakge to work with PCAP dumps
+crafter : Tools to Analyze and Visualize Network Packet Capture (PCAP) Files
 
 Life's too short to export to CSV/XML. There's no reason R should not be able to read binary PCAP data.
 
@@ -35,11 +35,14 @@ If there's any hope for this to run on Windows (`libcrafter` supports Windows) i
 
 The following functions are implemented:
 
-- `read_pcap`: for now, it pulls IP packet metadata from PCAP dumps. The whole works is planned, tho.
+- `read_pcap`:	Read in a packet capture file
+- `summary.crafter`:	Print summary info about a packet capture
 
 ### News
 
-- Version 0.0.0.9000 released
+- Version 0.1.0.9000 : very basic functionality!
+- Version 0.0.1.9000 : refactor into classed environment
+- Version 0.0.0.9000 : released
 
 ### Installation
 
@@ -58,6 +61,31 @@ library(crafter)
 
 # current verison
 packageVersion("crafter")
+
+library(crafter)
+library(dplyr)
+library(ggplot2)
+
+# read in the "honeybot" packet capture from the "Capture the hacker 2013"
+# competition (by Dr. David Day of Sheffield Hallam University) http://www.snaketrap.co.uk/
+hbot <- read_pcap(system.file("pcaps/hbot.pcap", package="crafter"))
+
+# high level statistics
+summary(hbot)
+
+# look at general packet info
+head(hbot$packet_info(), 15)
+
+# look at the IP layer packets
+head(hbot$get_layer("IP"), 20)
+
+# see the protocol distribution
+hbot$get_layer("IP") %>% 
+  count(protocol_name) %>% 
+  ggplot(aes(x=protocol_name, y=n)) + 
+  geom_bar(stat="identity") + 
+  labs(x=NULL, title="Honeybot IP Protocols") + 
+  theme_bw()
 
 ```
 
