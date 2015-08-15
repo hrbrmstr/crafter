@@ -96,3 +96,18 @@ read_pcap <- function(capture_file, filter="") {
 summary.crafter <- function(pcap) {
   pcap$summary()
 }
+
+#' Print method
+#'
+#' @export
+print.crafter <- function(pcap) {
+  print(pcap$packet_info())
+}
+
+
+
+
+
+
+
+
