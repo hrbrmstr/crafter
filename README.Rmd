@@ -94,7 +94,7 @@ summary(hbot)
 head(hbot$packet_info(), 15)
 
 # look at the IP layer packets
-head(hbot_ip <- hbot$get_layer("IP"), 10)
+hbot_ip <- hbot$get_layer("IP")
 
 # have some semi-useless fun!
 pairs <- count(hbot_ip, src, dst, protocol_name)
@@ -102,8 +102,16 @@ pairs <- count(hbot_ip, src, dst, protocol_name)
 nodes <- unique(c(pairs$src, pairs$dst))
 
 g <- graph_from_data_frame(pairs, directed=TRUE, vertices=nodes)
+```
+
+```{r fig.width=10, fig.height=10}
 plot(g, layout=layout.circle, vertex.size=sqrt(degree(g)), 
      vertex.label=NA, edge.width=0.5, edge.arrow.width=0.5, edge.arrow.size=0.5)
+```
+
+```{r}
+# look at the data
+head(hbot_ip, 10)
 
 # look at the TCP layer packets
 head(hbot$get_layer("TCP"), 5)
