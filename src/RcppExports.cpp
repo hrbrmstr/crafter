@@ -51,3 +51,14 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// get_tcp_layer
+DataFrame get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap);
+RcppExport SEXP crafter_get_tcp_layer(SEXP pcapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Crafter::Packet*> > >::type pcap(pcapSEXP);
+    __result = Rcpp::wrap(get_tcp_layer(pcap));
+    return __result;
+END_RCPP
+}

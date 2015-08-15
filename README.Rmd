@@ -47,7 +47,8 @@ The following functions are implemented:
 
 ### News
 
-- Version 0.1.0.9000 : very basic functionality!
+- Version 0.1.1.9000 : restored packet number in data frame & added TCP layer
+- Version 0.1.0.9000 : very basic functionality (IP layer)!
 - Version 0.0.1.9000 : refactor into classed environment
 - Version 0.0.0.9000 : released
 
@@ -85,6 +86,9 @@ head(hbot$packet_info(), 15)
 
 # look at the IP layer packets
 head(hbot$get_layer("IP"), 20)
+
+# look at the TCP layer packets
+head(hbot$get_layer("TCP"), 20)
 
 # see the protocol distribution
 hbot$get_layer("IP") %>% 

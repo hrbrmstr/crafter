@@ -45,7 +45,7 @@ read_pcap <- function(capture_file, filter="") {
                                        "TCPOptionSACKPermitted")) {
       switch(layer_name,
 #             Ethernet=get_ethernet_layer(private$pcap),
-#             TCP=get_tcp_layer(private$pcap),
+             TCP=go_get_tcp_layer(private$pcap, first_packet()),
              IP=go_get_ip_layer(private$pcap, first_packet()),
              stop(sprintf("'%s' decoding not implemented yet", layer_name)))
     }

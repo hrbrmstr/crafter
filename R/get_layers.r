@@ -10,9 +10,23 @@ go_get_ip_layer <- function(pcap, first_packet) {
 
   ip <- arrange(ip, num)
 
-  ip[,c("num", "tv_sec", "tv_usec", "src", "dst", "protocol",
+  ip[,c("num", "tv_sec", "tv_usec", "src", "dst",
         "protocol_name", "size", "header_len", "total_len", "ttl", "flags",
         "flag_bits", "dscp", "frag_ofs")]
 
 }
 
+go_get_tcp_layer <- function(pcap, first_packet) {
+
+  tcp <- get_tcp_layer(pcap)
+
+  tcp <- merge(tcp, protocol_numbers[, c("protocol", "protocol_name")],
+              by.x="protocol", by.y="protocol")
+
+  tcp <- arrange(tcp, num)
+
+  tcp[,c("num", "tv_sec", "tv_usec", "src", "dst",
+        "protocol_name", "srcport", "dstport", "seqnum", "acknum",
+        "fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr")]
+
+}
