@@ -86,6 +86,7 @@ DataFrame get_packet_info(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
 
   int i=0;
   for(it_pck = pck_cont.begin() ; it_pck != pck_cont.end() ; it_pck++) {
+    num[i] = i+1;
     layer_count[i] = (*it_pck)->GetLayerCount();
     packet_size[i] = (*it_pck)->GetSize();
     ts = (*it_pck)->GetTimestamp();
@@ -99,7 +100,8 @@ DataFrame get_packet_info(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
     i++;
   }
 
-  return DataFrame::create(_["tv_sec"] = tssec,
+  return DataFrame::create(_["num"] = num,
+                           _["tv_sec"] = tssec,
                            _["tv_usec"] = tsusec,
                            _["layer_count"] = layer_count,
                            _["protocols"] = protos,
@@ -135,6 +137,7 @@ DataFrame get_ip_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
   std::vector<Packet*>::iterator it_pck;
   timeval ts;
 
+  int i = 0;
   for(it_pck = pck_cont.begin() ; it_pck != pck_cont.end() ; it_pck++) {
 
     IP* ip_layer = (*it_pck)->GetLayer<IP>();
@@ -143,6 +146,7 @@ DataFrame get_ip_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
 
       ts = (*it_pck)->GetTimestamp();
 
+      num.push_back(i+1);
       tssec.push_back(ts.tv_sec);
       tsusec.push_back(ts.tv_usec);
       sz.push_back((*it_pck)->GetSize());
@@ -159,9 +163,12 @@ DataFrame get_ip_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
 
     }
 
+    i++;
+
   }
 
-  return DataFrame::create(_["tv_sec"] = tssec,
+  return DataFrame::create(_["num"] = num,
+                           _["tv_sec"] = tssec,
                            _["tv_usec"] = tsusec,
                            _["src"] = src,
                            _["dst"] = dst,
