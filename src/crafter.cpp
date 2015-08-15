@@ -67,6 +67,21 @@ int num_packets(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
 
 }
 
+// [[Rcpp::export]]
+CharacterVector get_payload_for(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap,
+                                int packet_num) {
+
+  std::vector<Packet*> pck_cont = *pcap;
+  RawLayer* raw = pck_cont[packet_num-1]->GetLayer<RawLayer>();
+  if (raw) {
+    return(raw->GetStringPayload());
+  } else {
+    return(NA_STRING);
+  }
+
+}
+
+
 // Get general packet info (high level) and return a data frame
 //
 // [[Rcpp::export]]
@@ -185,11 +200,13 @@ DataFrame get_ip_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
 }
 
 
-// get the tcp layer from a pcap as a data frame
+// get the tcp layer from a pcap as a data frame but we
+// can't due to Rcpp limitation in DataFrame::create so we
+// have to make it a List and do as.data.frame in R
 //
 // @param pcap pcap
 // [[Rcpp::export]]
-DataFrame get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
+List get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
 
   std::vector<Packet*> pck_cont = *pcap;
 
@@ -203,6 +220,8 @@ DataFrame get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
   std::vector<int> dstport; dstport.reserve(pck_cont.size());
   std::vector<unsigned int> seqnum; seqnum.reserve(pck_cont.size());
   std::vector<unsigned int> acknum; acknum.reserve(pck_cont.size());
+  std::vector<int> headersize; headersize.reserve(pck_cont.size());
+  std::vector<int> payloadsize; payloadsize.reserve(pck_cont.size());
   std::vector<bool> fin; fin.reserve(pck_cont.size());
   std::vector<bool> syn; syn.reserve(pck_cont.size());
   std::vector<bool> rst; rst.reserve(pck_cont.size());
@@ -211,6 +230,7 @@ DataFrame get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
   std::vector<bool> urg; urg.reserve(pck_cont.size());
   std::vector<bool> ece; ece.reserve(pck_cont.size());
   std::vector<bool> cwr; cwr.reserve(pck_cont.size());
+  std::vector<std::string> payload; payload.reserve(pck_cont.size());
 
 
   std::vector<Packet*>::iterator it_pck;
@@ -224,6 +244,8 @@ DataFrame get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
 
     if (tcp_layer) {
 
+      RawLayer* raw_layer = (*it_pck)->GetLayer<RawLayer>();
+
       ts = (*it_pck)->GetTimestamp();
 
       num.push_back(i+1);
@@ -236,6 +258,14 @@ DataFrame get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
       dstport.push_back((int)tcp_layer->GetDstPort());
       seqnum.push_back((unsigned int)tcp_layer->GetSeqNumber());
       acknum.push_back((unsigned int)tcp_layer->GetAckNumber());
+      headersize.push_back((int)tcp_layer->GetHeaderSize());
+      if (raw_layer) {
+        payloadsize.push_back((int)raw_layer->GetPayloadSize());
+        payload.push_back(raw_layer->GetStringPayload());
+      } else {
+        payloadsize.push_back((int)tcp_layer->GetPayloadSize());
+        payload.push_back("");
+      }
       fin.push_back((int)tcp_layer->GetFIN());
       syn.push_back((int)tcp_layer->GetSYN());
       rst.push_back((int)tcp_layer->GetRST());
@@ -251,25 +281,30 @@ DataFrame get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
 
   }
 
-  return DataFrame::create(_["num"] = num,
-                           _["tv_sec"] = tssec,
-                           _["tv_usec"] = tsusec,
-                           _["src"] = src,
-                           _["dst"] = dst,
-                           _["protocol"] = protocol,
-                           _["srcport"] = srcport,
-                           _["dstport"] = dstport,
-                           _["seqnum"] = seqnum,
-                           _["acknum"] = acknum,
-                           _["fin"] = fin,
-                           _["syn"] = syn,
-                           _["rst"] = rst,
-                           _["psh"] = psh,
-                           _["ack"] = ack,
-                           _["urg"] = urg,
-                           _["ece"] = ece,
-                           _["cwr"] = cwr,
-                           _["stringsAsFactors"] = false);
+  List ret1 = List::create(_["num"] = num,
+                      _["tv_sec"] = tssec,
+                      _["tv_usec"] = tsusec,
+                      _["src"] = src,
+                      _["dst"] = dst,
+                      _["protocol"] = protocol,
+                      _["srcport"] = srcport,
+                      _["dstport"] = dstport,
+                      _["seqnum"] = seqnum,
+                      _["acknum"] = acknum,
+                      _["headersize"] = headersize,
+                      _["payloadsize"] = payloadsize,
+                      _["fin"] = fin,
+                      _["syn"] = syn,
+                      _["rst"] = rst,
+                      _["psh"] = psh,
+                      _["ack"] = ack,
+                      _["urg"] = urg,
+                      _["ece"] = ece,
+                      _["cwr"] = cwr);
+
+  List ret2 = List::create(_["payload"] = payload);
+
+  return(List::create(ret1, ret2));
 
 }
 

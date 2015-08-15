@@ -9,6 +9,10 @@ num_packets <- function(pcap) {
     .Call('crafter_num_packets', PACKAGE = 'crafter', pcap)
 }
 
+get_payload_for <- function(pcap, packet_num) {
+    .Call('crafter_get_payload_for', PACKAGE = 'crafter', pcap, packet_num)
+}
+
 get_packet_info <- function(pcap) {
     .Call('crafter_get_packet_info', PACKAGE = 'crafter', pcap)
 }

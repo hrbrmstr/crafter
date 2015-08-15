@@ -29,6 +29,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// get_payload_for
+CharacterVector get_payload_for(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap, int packet_num);
+RcppExport SEXP crafter_get_payload_for(SEXP pcapSEXP, SEXP packet_numSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Crafter::Packet*> > >::type pcap(pcapSEXP);
+    Rcpp::traits::input_parameter< int >::type packet_num(packet_numSEXP);
+    __result = Rcpp::wrap(get_payload_for(pcap, packet_num));
+    return __result;
+END_RCPP
+}
 // get_packet_info
 DataFrame get_packet_info(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap);
 RcppExport SEXP crafter_get_packet_info(SEXP pcapSEXP) {
@@ -52,7 +64,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // get_tcp_layer
-DataFrame get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap);
+List get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap);
 RcppExport SEXP crafter_get_tcp_layer(SEXP pcapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;

@@ -47,11 +47,13 @@ The following functions are implemented:
 
 - `pcap$get_layer`: return a data.frame with the indicated protocol layer from the pcap packets
 - `pcap$packet_info`: retrieve a data frame of high level packet info
+- `pcap$get_payload`: retrieve payload (if any) from a given packet number
 
 (There are actually more but they're inside the pcap object and I just need to get them exposed. See the example below for usage.)
 
 ### News
 
+- Version 0.1.3.9000 : rudimentary payload data!
 - Version 0.1.2.9000 : added ICMP layer
 - Version 0.1.1.9000 : restored packet number in data frame & added TCP layer
 - Version 0.1.0.9000 : very basic functionality (IP layer)!

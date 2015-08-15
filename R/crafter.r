@@ -39,6 +39,10 @@ read_pcap <- function(capture_file, filter="") {
              "protocols", "packet_size")]
     }
 
+    get_payload <- function(num) {
+      get_payload_for(private$pcap, num)
+    }
+
     #' @describeIn get_layer retrieve a specific layer type
     get_layer <- function(layer_name=c("Ethernet", "IP", "TCP", "ICMP",
                                        "TCPOptionMaxSegSize", "TCPOptionPad",
