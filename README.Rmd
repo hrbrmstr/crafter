@@ -93,10 +93,23 @@ summary(hbot)
 head(hbot$packet_info(), 15)
 
 # look at the IP layer packets
-head(hbot$get_layer("IP"), 20)
+head(hbot$get_layer("IP"), 10)
 
 # look at the TCP layer packets
-head(hbot$get_layer("TCP"), 20)
+head(hbot$get_layer("TCP"), 5)
+
+# this is probably a bit more useful
+hbot_tcp <- hbot$get_layer("TCP")
+
+src <- "192.168.0.200"
+dst <- "91.199.212.171"
+
+hbot_tcp %>% 
+  filter((src==src & dst==dst) |
+         (src==dst | dst == src)) %>% 
+  select(payload) -> pays
+
+cat(paste0(pays$payload[1:25], collapse="\n"))
 
 # look at the ICMP layer packets
 head(hbot$get_layer("ICMP"), 20)

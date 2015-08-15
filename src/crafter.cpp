@@ -281,7 +281,7 @@ List get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
 
   }
 
-  List ret1 = List::create(_["num"] = num,
+  DataFrame ret1 = DataFrame::create(_["num"] = num,
                       _["tv_sec"] = tssec,
                       _["tv_usec"] = tsusec,
                       _["src"] = src,
@@ -300,9 +300,11 @@ List get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
                       _["ack"] = ack,
                       _["urg"] = urg,
                       _["ece"] = ece,
-                      _["cwr"] = cwr);
+                      _["stringsAsFactors"] = false);
 
-  List ret2 = List::create(_["payload"] = payload);
+  DataFrame ret2 = DataFrame::create(_["payload"] = payload,
+                           _["cwr"] = cwr,
+                           _["stringsAsFactors"] = false);
 
   return(List::create(ret1, ret2));
 

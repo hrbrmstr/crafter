@@ -129,7 +129,7 @@ head(hbot$packet_info(), 15)
 #> 15          62
 
 # look at the IP layer packets
-head(hbot$get_layer("IP"), 20)
+head(hbot$get_layer("IP"), 10)
 #>    num     tv_sec tv_usec            src            dst protocol_name size header_len total_len ttl flags flag_bits
 #> 1    1 1357913756  642112  192.168.0.200  194.168.4.100           UDP   83          5        69 128     0       000
 #> 2    2 1357913756  652518  194.168.4.100  192.168.0.200           UDP  195          5       181 253     2       010
@@ -141,16 +141,6 @@ head(hbot$get_layer("IP"), 20)
 #> 8    8 1357913763   60454 91.199.212.171  192.168.0.200           TCP   62          5        48  49     2       010
 #> 9    9 1357913763   60517  192.168.0.200 91.199.212.171           TCP   54          5        40 128     2       010
 #> 10  10 1357913763   61083  192.168.0.200 91.199.212.171           TCP  162          5       148 128     2       010
-#> 11  11 1357913763   89809 91.199.212.171  192.168.0.200           TCP   54          5        40  49     2       010
-#> 12  12 1357913763   90103 91.199.212.171  192.168.0.200           TCP  452          5       438  49     2       010
-#> 13  13 1357913763  137534  192.168.0.200  194.168.4.100           UDP   80          5        66 128     0       000
-#> 14  14 1357913763  147996  194.168.4.100  192.168.0.200           UDP   96          5        82 253     2       010
-#> 15  15 1357913763  149377  192.168.0.200   178.255.82.1           TCP   62          5        48 128     2       010
-#> 16  16 1357913763  228146  192.168.0.200 91.199.212.171           TCP   54          5        40 128     2       010
-#> 17  17 1357913763  247620   178.255.82.1  192.168.0.200           TCP   62          5        48  49     2       010
-#> 18  18 1357913763  247671  192.168.0.200   178.255.82.1           TCP   54          5        40 128     2       010
-#> 19  19 1357913763  248170  192.168.0.200   178.255.82.1           TCP  187          5       173 128     2       010
-#> 20  20 1357913763  348497   178.255.82.1  192.168.0.200           TCP   54          5        40  49     2       010
 #>    dscp frag_ofs
 #> 1     0        0
 #> 2     0        0
@@ -162,82 +152,304 @@ head(hbot$get_layer("IP"), 20)
 #> 8     0        0
 #> 9     0        0
 #> 10    0        0
-#> 11    0        0
-#> 12    0        0
-#> 13    0        0
-#> 14    0        0
-#> 15    0        0
-#> 16    0        0
-#> 17    0        0
-#> 18    0        0
-#> 19    0        0
-#> 20    0        0
 
 # look at the TCP layer packets
-head(hbot$get_layer("TCP"), 20)
-#>    num     tv_sec tv_usec            src            dst protocol_name srcport dstport     seqnum     acknum headersize
-#> 1    7 1357913763   34026  192.168.0.200 91.199.212.171           TCP    1033      80 3814599572          0         20
-#> 2    8 1357913763   60454 91.199.212.171  192.168.0.200           TCP      80    1033 1804036196 3814599573         20
-#> 3    9 1357913763   60517  192.168.0.200 91.199.212.171           TCP    1033      80 3814599573 1804036197         20
-#> 4   10 1357913763   61083  192.168.0.200 91.199.212.171           TCP    1033      80 3814599573 1804036197         20
-#> 5   11 1357913763   89809 91.199.212.171  192.168.0.200           TCP      80    1033 1804036197 3814599681         20
-#> 6   12 1357913763   90103 91.199.212.171  192.168.0.200           TCP      80    1033 1804036197 3814599681         20
-#> 7   15 1357913763  149377  192.168.0.200   178.255.82.1           TCP    1035      80 1589035848          0         20
-#> 8   16 1357913763  228146  192.168.0.200 91.199.212.171           TCP    1033      80 3814599681 1804036595         20
-#> 9   17 1357913763  247620   178.255.82.1  192.168.0.200           TCP      80    1035 2486095265 1589035849         20
-#> 10  18 1357913763  247671  192.168.0.200   178.255.82.1           TCP    1035      80 1589035849 2486095266         20
-#> 11  19 1357913763  248170  192.168.0.200   178.255.82.1           TCP    1035      80 1589035849 2486095266         20
-#> 12  20 1357913763  348497   178.255.82.1  192.168.0.200           TCP      80    1035 2486095266 1589035982         20
-#> 13  21 1357913763  348961   178.255.82.1  192.168.0.200           TCP      80    1035 2486095266 1589035982         20
-#> 14  22 1357913763  349525   178.255.82.1  192.168.0.200           TCP      80    1035 2486096726 1589035982         20
-#> 15  23 1357913763  349762  192.168.0.200   178.255.82.1           TCP    1035      80 1589035982 2486098186         20
-#> 16  24 1357913763  350125   178.255.82.1  192.168.0.200           TCP      80    1035 2486098186 1589035982         20
-#> 17  25 1357913763  448811   178.255.82.1  192.168.0.200           TCP      80    1035 2486099646 1589035982         20
-#> 18  26 1357913763  449199  192.168.0.200   178.255.82.1           TCP    1035      80 1589035982 2486099703         20
-#> 19  27 1357913765   88525 91.199.212.171  192.168.0.200           TCP      80    1033 1804036595 3814599681         20
-#> 20  28 1357913765   88703  192.168.0.200 91.199.212.171           TCP    1033      80 3814599681 1804036596         20
-#>    payloadsize   fin   syn   rst   psh   ack   urg   ece   cwr
-#> 1            0 FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
-#> 2            0 FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 3            0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 4          108 FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
-#> 5            0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 6          398 FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
-#> 7            0 FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
-#> 8            0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 9            0 FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 10           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 11         133 FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
-#> 12           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 13        1460 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 14        1460 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 15           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 16        1460 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 17          57 FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
-#> 18           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 19           0  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 20           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     payload
-#> 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-#> 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-#> 3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-#> 4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    GET /av/tvl/deletedvendors.txt HTTP/1.1\r\nAccept: */*\r\nHost: download.comodo.com\r\nCache-Control: no-cache\r\n\r\n
-#> 5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-#> 6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            HTTP/1.1 302 Moved Temporarily\r\nServer: nginx\r\nDate: Fri, 11 Jan 2013 14:16:03 GMT\r\nContent-Type: text/html\r\nContent-Length: 154\r\nConnection: keep-alive\r\nKeep-Alive: timeout=1\r\nLocation: http://downloads.comodo.com/av/tvl/deletedvendors.txt\r\n\r\n<html>\r\n<head><title>302 Found</title></head>\r\n<body bgcolor="white">\r\n<center><h1>302 Found</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n
-#> 7                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-#> 8                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-#> 9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-#> 10                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-#> 11                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        GET /av/tvl/deletedvendors.txt HTTP/1.1\r\nAccept: */*\r\nConnection: Keep-Alive\r\nCache-Control: no-cache\r\nHost: downloads.comodo.com\r\n\r\n
-#> 12                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-#> 13 HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Fri, 11 Jan 2013 14:16:03 GMT\r\nContent-Type: text/plain\r\nContent-Length: 4147\r\nLast-Modified: Wed, 19 Dec 2012 15:51:29 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout=1\r\nVary: Accept-Encoding\r\nX-CCACDN-Mirror-ID: t8edcgdown5\r\nAccept-Ranges: bytes\r\n\r\n﻿Aignesberger Software GmbH\r\nAlienware Corporation\r\nALIKET SOFTWARE CO., LTD.\r\nAsk.com\r\nBolide Software\r\nByteSphere Technologies LLC\r\nConduit Ltd.\r\nCyberDefender Corp.\r\nDigital River, Inc.\r\nEltima Software\r\nEsystech Indústria e Comércio Ltda\r\nFree Peers Inc.\r\nHolz Thomas\r\nIlya Kheifets\r\nKwinzy.com\r\nLe Software Man Ltd\r\nMeMedia\r\nMetaProducts Corporation\r\nMusiclab, LLC\r\nNCH Software\r\nNCH Swift Sound\r\nNsasoft LLC.\r\nPatchou\r\nPC Drivers HeadQuarters, Inc\r\nRealVNC Ltd\r\nRediff.com India Limited\r\nSoftDD Software\r\nKwanzy.com\r\nebiznetworks\r\neBizNetworks Co.,Ltd.\r\nHappyscreensavers.com\r\nQueryExplorer.com\r\nSecureSoft\r\nZinkSeek.com\r\nZinkzo.com\r\nZinkWink.com\r\nBrowserDiscover.com\r\nBrowserQuery.com\r\nBrowserSeek.com\r\nQueryBrowse.com\r\nQuestBrowse.com\r\nResultBrowser.com\r\nResultDns.com\r\nResultTool.com\r\nResultUrl.com\r\nWeemi.com\r\nWinkZink.com\r\nWyeke.com\r\nWyyo.com\r\nComputer Business Solutions, Inc.\r\nDNAML PTY LTD\r\nWhiteSmoke Inc\r\nWHENU.COM\r\nWHENU.COM INC\r\nWhere's George? LLC\r\nQuestUrl.com\r\nCreativeToolbarSolutions.com\r\nZwunzi.com\r\nZwankySearch.com\r\nZwangie.com\r\nZwangi.com\r\njdoctor\r\njynetworks\r\nJiniInfo\r\nWeiSiTianYu Software Develop Service Center\r\nthe best offers network
-#> 14           , llc.\r\neCode Sky Network Technology Co., Ltd.\r\nAlexa Internet\r\neAcceleration Corporation\r\nThe World Gate, Inc\r\niWin, Inc\r\nCOMARCH S.A.\r\nVomba Network\r\nuvnc bvba\r\nWeatherBug\r\nZhejiang HaoYing Network Co.,Ltd\r\nnanjing wangya computer co.\r\nNanJing WangYa Computer Co., Ltd.\r\nBeijing Huyangfeng Information Technology Co., Ltd.\r\nBit Wise Publishing, LLC\r\nBrodin Asset Management\r\nCommunication Horizons\r\nDREAMGROUP\r\nEffective Measure International Pty Ltd\r\nEVERYZONE. Inc.\r\nEZLinks Golf, Inc.\r\nFisher-Price, Inc.\r\nFreeCause, Inc.\r\nVolker Feldmann Software GmbH\r\nVoltron Corporation\r\nWebteh d.o.o.\r\nWindowlink Ltd\r\nWINDOWSTOOL\r\nWindward Software Inc\r\nX2Net DEMO Certificate Only\r\nXf trade LLP\r\nZemerick Software, Inc.\r\nWindward Software Inc.\r\nFreeCause Inc.\r\nEVERYZONE. Inc.\r\nMake The Web Better, LLC\r\nMicroSmarts LLC\r\nMochaSoft Aps\r\nORPALIS\r\nQuicken Australia\r\nRapid Decision Corporation\r\nReklosoft LLC\r\nRhino Software Inc.\r\nSharony Management Services Ltd.\r\nSmartLine Inc\r\nSnappy Fox Software\r\nSystem Update BR\r\nTeslain\r\nThe Illumen Group, Inc.\r\nTurboPower Software Company\r\nUNIBANCO - UNIAO DE BANCOS BRASILEIROS S/A\r\nUUSEE Inc.\r\nUUSee Inc.\r\nUiTV Inc.\r\nVNN Networks, Inc.\r\nViewpoint Corporation\r\nVisicom Media Inc.\r\nVoiceFive Networks, Inc.\r\nVoicefive Networks, Inc.\r\nmgoonmedia Inc\r\nmone\r\nAltrixSoft Ltd\r\nSafeApp Software, LLC\r\nAvalanche LLC\r\nglobe7 inc\r\nUnilogix Solutions Pte. Ltd\r\nQUALTIVA TECHNOLOGIES LLC\r\nAdvanced Search Technologies, Inc.\r\nZugo Ltd\r\nAOS
-#> 15                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-#> 16                          Technologies, Inc.\r\nAscentive LLC\r\nAtelierWeb Software\r\nAxolotl Online Inc.\r\nCentralGest, SA\r\nAJSystems.com Inc.\r\nNetRatings, Inc.\r\nPatrick Jansen\r\nTelemate\r\nSecurityFriday Co. Ltd.\r\nInfoWorks Technology Company\r\nPPLive Corporation\r\nRealVNC Limited\r\nPartyGaming Services\r\nMarket Precision, Inc.\r\nMax Secure Software India Pvt. Ltd.\r\nSmart PC Solutions, Inc.\r\nMax Secure Software\r\nSmart Soft\r\nFamatech Corp.\r\nZemana Information Technologies Industry Limited\r\nDataMystic\r\nXionix\r\nAmmyy Group\r\n北京聚金振业科技有限公司\r\nEorezo\r\nMedia Get LLC\r\nVittalia Internet S.L\r\nJ2networks\r\nSuzhou Shijie Software Co., LTD\r\nFuzhou TianxiaChuangshi Digital Co.,Ltd.\r\nSafe Decision, Inc\r\nAthena IT Limited\r\nPassware Inc. Limited\r\nYoics, Inc\r\nSmartCode Solutions\r\nDubai Click LLC\r\nAlexander Avdonin\r\nAtomPark Software JSV\r\nWebMinds, Inc\r\nwinwinnetworks\r\nWorld Multimedia Group\r\nWorldWinner.com, Inc.\r\nmIRC Co. Ltd.\r\nAlactro LLC\r\nSolimba Aplicaciones S.L.\r\nREDACCENIR SL\r\nKoyote-Lab Inc.\r\nMusicLab LLC\r\niMesh Inc.\r\nSun River Systems, Inc.\r\nSRC Technologies\r\nSolid Quest Inc.\r\nClaria Corporation\r\nSmart Line Incorporated\r\nSARL POINTDEV\r\nRecovery Toolbox, Inc.\r\nDaniel Offer\r\nDDX SOFTWARE, INC\r\nDeskToolsSoft\r\nDevice Doctor Software Inc.\r\nMedia Labs Limited\r\nPixel-Tech s.c. J. Pytowski, P.Kubarek\r\nPconPoint.com\r\nd & p media GmbH\r\nElectraSoft\r\nWEB PICK - INTERNET HOLDINGS LTD\r\nScreaming Bee\r\n보안연구소(주)\r\nSoftonic International\r\nAlawar Entertainment Inc\r\nLLC
-#> 17                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           Mail.Ru\r\nA&B Software LLC\r\nW3i, LLC\r\nRoy Morgan Research
-#> 18                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-#> 19                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-#> 20
+head(hbot$get_layer("TCP"), 5)
+#>   num     tv_sec tv_usec            src            dst protocol_name srcport dstport     seqnum     acknum headersize
+#> 1   7 1357913763   34026  192.168.0.200 91.199.212.171           TCP    1033      80 3814599572          0         20
+#> 2   8 1357913763   60454 91.199.212.171  192.168.0.200           TCP      80    1033 1804036196 3814599573         20
+#> 3   9 1357913763   60517  192.168.0.200 91.199.212.171           TCP    1033      80 3814599573 1804036197         20
+#> 4  10 1357913763   61083  192.168.0.200 91.199.212.171           TCP    1033      80 3814599573 1804036197         20
+#> 5  11 1357913763   89809 91.199.212.171  192.168.0.200           TCP      80    1033 1804036197 3814599681         20
+#>   payloadsize   fin   syn   rst   psh   ack   urg   ece   cwr
+#> 1           0 FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+#> 2           0 FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
+#> 3           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+#> 4         108 FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+#> 5           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+#>                                                                                                                  payload
+#> 1                                                                                                                       
+#> 2                                                                                                                       
+#> 3                                                                                                                       
+#> 4 GET /av/tvl/deletedvendors.txt HTTP/1.1\r\nAccept: */*\r\nHost: download.comodo.com\r\nCache-Control: no-cache\r\n\r\n
+#> 5
+
+# this is probably a bit more useful
+hbot_tcp <- hbot$get_layer("TCP")
+
+src <- "192.168.0.200"
+dst <- "91.199.212.171"
+
+hbot_tcp %>% 
+  filter((src==src & dst==dst) |
+         (src==dst | dst == src)) %>% 
+  select(payload) -> pays
+
+cat(paste0(pays$payload[1:25], collapse="\n"))
+#> 
+#> 
+#> 
+#> GET /av/tvl/deletedvendors.txt HTTP/1.1
+#> Accept: */*
+#> Host: download.comodo.com
+#> Cache-Control: no-cache
+#> 
+#> 
+#> 
+#> HTTP/1.1 302 Moved Temporarily
+#> Server: nginx
+#> Date: Fri, 11 Jan 2013 14:16:03 GMT
+#> Content-Type: text/html
+#> Content-Length: 154
+#> Connection: keep-alive
+#> Keep-Alive: timeout=1
+#> Location: http://downloads.comodo.com/av/tvl/deletedvendors.txt
+#> 
+#> <html>
+#> <head><title>302 Found</title></head>
+#> <body bgcolor="white">
+#> <center><h1>302 Found</h1></center>
+#> <hr><center>nginx</center>
+#> </body>
+#> </html>
+#> 
+#> 
+#> 
+#> 
+#> 
+#> GET /av/tvl/deletedvendors.txt HTTP/1.1
+#> Accept: */*
+#> Connection: Keep-Alive
+#> Cache-Control: no-cache
+#> Host: downloads.comodo.com
+#> 
+#> 
+#> 
+#> HTTP/1.1 200 OK
+#> Server: nginx
+#> Date: Fri, 11 Jan 2013 14:16:03 GMT
+#> Content-Type: text/plain
+#> Content-Length: 4147
+#> Last-Modified: Wed, 19 Dec 2012 15:51:29 GMT
+#> Connection: keep-alive
+#> Keep-Alive: timeout=1
+#> Vary: Accept-Encoding
+#> X-CCACDN-Mirror-ID: t8edcgdown5
+#> Accept-Ranges: bytes
+#> 
+#> Aignesberger Software GmbH
+#> Alienware Corporation
+#> ALIKET SOFTWARE CO., LTD.
+#> Ask.com
+#> Bolide Software
+#> ByteSphere Technologies LLC
+#> Conduit Ltd.
+#> CyberDefender Corp.
+#> Digital River, Inc.
+#> Eltima Software
+#> Esystech Indústria e Comércio Ltda
+#> Free Peers Inc.
+#> Holz Thomas
+#> Ilya Kheifets
+#> Kwinzy.com
+#> Le Software Man Ltd
+#> MeMedia
+#> MetaProducts Corporation
+#> Musiclab, LLC
+#> NCH Software
+#> NCH Swift Sound
+#> Nsasoft LLC.
+#> Patchou
+#> PC Drivers HeadQuarters, Inc
+#> RealVNC Ltd
+#> Rediff.com India Limited
+#> SoftDD Software
+#> Kwanzy.com
+#> ebiznetworks
+#> eBizNetworks Co.,Ltd.
+#> Happyscreensavers.com
+#> QueryExplorer.com
+#> SecureSoft
+#> ZinkSeek.com
+#> Zinkzo.com
+#> ZinkWink.com
+#> BrowserDiscover.com
+#> BrowserQuery.com
+#> BrowserSeek.com
+#> QueryBrowse.com
+#> QuestBrowse.com
+#> ResultBrowser.com
+#> ResultDns.com
+#> ResultTool.com
+#> ResultUrl.com
+#> Weemi.com
+#> WinkZink.com
+#> Wyeke.com
+#> Wyyo.com
+#> Computer Business Solutions, Inc.
+#> DNAML PTY LTD
+#> WhiteSmoke Inc
+#> WHENU.COM
+#> WHENU.COM INC
+#> Where's George? LLC
+#> QuestUrl.com
+#> CreativeToolbarSolutions.com
+#> Zwunzi.com
+#> ZwankySearch.com
+#> Zwangie.com
+#> Zwangi.com
+#> jdoctor
+#> jynetworks
+#> JiniInfo
+#> WeiSiTianYu Software Develop Service Center
+#> the best offers network
+#> , llc.
+#> eCode Sky Network Technology Co., Ltd.
+#> Alexa Internet
+#> eAcceleration Corporation
+#> The World Gate, Inc
+#> iWin, Inc
+#> COMARCH S.A.
+#> Vomba Network
+#> uvnc bvba
+#> WeatherBug
+#> Zhejiang HaoYing Network Co.,Ltd
+#> nanjing wangya computer co.
+#> NanJing WangYa Computer Co., Ltd.
+#> Beijing Huyangfeng Information Technology Co., Ltd.
+#> Bit Wise Publishing, LLC
+#> Brodin Asset Management
+#> Communication Horizons
+#> DREAMGROUP
+#> Effective Measure International Pty Ltd
+#> EVERYZONE. Inc.
+#> EZLinks Golf, Inc.
+#> Fisher-Price, Inc.
+#> FreeCause, Inc.
+#> Volker Feldmann Software GmbH
+#> Voltron Corporation
+#> Webteh d.o.o.
+#> Windowlink Ltd
+#> WINDOWSTOOL
+#> Windward Software Inc
+#> X2Net DEMO Certificate Only
+#> Xf trade LLP
+#> Zemerick Software, Inc.
+#> Windward Software Inc.
+#> FreeCause Inc.
+#> EVERYZONE. Inc.
+#> Make The Web Better, LLC
+#> MicroSmarts LLC
+#> MochaSoft Aps
+#> ORPALIS
+#> Quicken Australia
+#> Rapid Decision Corporation
+#> Reklosoft LLC
+#> Rhino Software Inc.
+#> Sharony Management Services Ltd.
+#> SmartLine Inc
+#> Snappy Fox Software
+#> System Update BR
+#> Teslain
+#> The Illumen Group, Inc.
+#> TurboPower Software Company
+#> UNIBANCO - UNIAO DE BANCOS BRASILEIROS S/A
+#> UUSEE Inc.
+#> UUSee Inc.
+#> UiTV Inc.
+#> VNN Networks, Inc.
+#> Viewpoint Corporation
+#> Visicom Media Inc.
+#> VoiceFive Networks, Inc.
+#> Voicefive Networks, Inc.
+#> mgoonmedia Inc
+#> mone
+#> AltrixSoft Ltd
+#> SafeApp Software, LLC
+#> Avalanche LLC
+#> globe7 inc
+#> Unilogix Solutions Pte. Ltd
+#> QUALTIVA TECHNOLOGIES LLC
+#> Advanced Search Technologies, Inc.
+#> Zugo Ltd
+#> AOS
+#> 
+#>  Technologies, Inc.
+#> Ascentive LLC
+#> AtelierWeb Software
+#> Axolotl Online Inc.
+#> CentralGest, SA
+#> AJSystems.com Inc.
+#> NetRatings, Inc.
+#> Patrick Jansen
+#> Telemate
+#> SecurityFriday Co. Ltd.
+#> InfoWorks Technology Company
+#> PPLive Corporation
+#> RealVNC Limited
+#> PartyGaming Services
+#> Market Precision, Inc.
+#> Max Secure Software India Pvt. Ltd.
+#> Smart PC Solutions, Inc.
+#> Max Secure Software
+#> Smart Soft
+#> Famatech Corp.
+#> Zemana Information Technologies Industry Limited
+#> DataMystic
+#> Xionix
+#> Ammyy Group
+#> 北京聚金振业科技有限公司
+#> Eorezo
+#> Media Get LLC
+#> Vittalia Internet S.L
+#> J2networks
+#> Suzhou Shijie Software Co., LTD
+#> Fuzhou TianxiaChuangshi Digital Co.,Ltd.
+#> Safe Decision, Inc
+#> Athena IT Limited
+#> Passware Inc. Limited
+#> Yoics, Inc
+#> SmartCode Solutions
+#> Dubai Click LLC
+#> Alexander Avdonin
+#> AtomPark Software JSV
+#> WebMinds, Inc
+#> winwinnetworks
+#> World Multimedia Group
+#> WorldWinner.com, Inc.
+#> mIRC Co. Ltd.
+#> Alactro LLC
+#> Solimba Aplicaciones S.L.
+#> REDACCENIR SL
+#> Koyote-Lab Inc.
+#> MusicLab LLC
+#> iMesh Inc.
+#> Sun River Systems, Inc.
+#> SRC Technologies
+#> Solid Quest Inc.
+#> Claria Corporation
+#> Smart Line Incorporated
+#> SARL POINTDEV
+#> Recovery Toolbox, Inc.
+#> Daniel Offer
+#> DDX SOFTWARE, INC
+#> DeskToolsSoft
+#> Device Doctor Software Inc.
+#> Media Labs Limited
+#> Pixel-Tech s.c. J. Pytowski, P.Kubarek
+#> PconPoint.com
+#> d & p media GmbH
+#> ElectraSoft
+#> WEB PICK - INTERNET HOLDINGS LTD
+#> Screaming Bee
+#> 보안연구소(주)
+#> Softonic International
+#> Alawar Entertainment Inc
+#> LLC
+#>  Mail.Ru
+#> A&B Software LLC
+#> W3i, LLC
+#> Roy Morgan Research
 
 # look at the ICMP layer packets
 head(hbot$get_layer("ICMP"), 20)
@@ -302,7 +514,7 @@ library(crafter)
 library(testthat)
 
 date()
-#> [1] "Sat Aug 15 10:38:51 2015"
+#> [1] "Sat Aug 15 11:18:54 2015"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================
