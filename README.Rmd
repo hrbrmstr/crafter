@@ -81,6 +81,7 @@ packageVersion("crafter")
 library(crafter)
 library(dplyr)
 library(ggplot2)
+library(igraph)
 
 # read in the "honeybot" packet capture from the "Capture the hacker 2013"
 # competition (by Dr. David Day of Sheffield Hallam University) http://www.snaketrap.co.uk/
@@ -93,7 +94,16 @@ summary(hbot)
 head(hbot$packet_info(), 15)
 
 # look at the IP layer packets
-head(hbot$get_layer("IP"), 10)
+head(hbot_ip <- hbot$get_layer("IP"), 10)
+
+# have some semi-useless fun!
+pairs <- count(hbot_ip, src, dst, protocol_name)
+
+nodes <- unique(c(pairs$src, pairs$dst))
+
+g <- graph_from_data_frame(pairs, directed=TRUE, vertices=nodes)
+plot(g, layout=layout.circle, vertex.size=sqrt(degree(g)), 
+     vertex.label=NA, edge.width=0.5, edge.arrow.width=0.5, edge.arrow.size=0.5)
 
 # look at the TCP layer packets
 head(hbot$get_layer("TCP"), 5)

@@ -72,6 +72,21 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(ggplot2)
+library(igraph)
+#> 
+#> Attaching package: 'igraph'
+#> 
+#> The following objects are masked from 'package:dplyr':
+#> 
+#>     %>%, as_data_frame, groups, union
+#> 
+#> The following objects are masked from 'package:stats':
+#> 
+#>     decompose, spectrum
+#> 
+#> The following object is masked from 'package:base':
+#> 
+#>     union
 
 # read in the "honeybot" packet capture from the "Capture the hacker 2013"
 # competition (by Dr. David Day of Sheffield Hallam University) http://www.snaketrap.co.uk/
@@ -129,7 +144,7 @@ head(hbot$packet_info(), 15)
 #> 15          62
 
 # look at the IP layer packets
-head(hbot$get_layer("IP"), 10)
+head(hbot_ip <- hbot$get_layer("IP"), 10)
 #>    num     tv_sec tv_usec            src            dst protocol_name size header_len total_len ttl flags flag_bits
 #> 1    1 1357913756  642112  192.168.0.200  194.168.4.100           UDP   83          5        69 128     0       000
 #> 2    2 1357913756  652518  194.168.4.100  192.168.0.200           UDP  195          5       181 253     2       010
@@ -152,6 +167,20 @@ head(hbot$get_layer("IP"), 10)
 #> 8     0        0
 #> 9     0        0
 #> 10    0        0
+
+# have some semi-useless fun!
+pairs <- count(hbot_ip, src, dst, protocol_name)
+
+nodes <- unique(c(pairs$src, pairs$dst))
+
+g <- graph_from_data_frame(pairs, directed=TRUE, vertices=nodes)
+plot(g, layout=layout.circle, vertex.size=sqrt(degree(g)), 
+     vertex.label=NA, edge.width=0.5, edge.arrow.width=0.5, edge.arrow.size=0.5)
+```
+
+<img src="README-unnamed-chunk-4-1.png" title="" alt="" width="672" />
+
+``` r
 
 # look at the TCP layer packets
 head(hbot$get_layer("TCP"), 5)
@@ -505,16 +534,22 @@ hbot$get_layer("IP") %>%
   theme_bw()
 ```
 
-<img src="README-unnamed-chunk-4-1.png" title="" alt="" width="672" />
+<img src="README-unnamed-chunk-4-2.png" title="" alt="" width="672" />
 
 ### Test Results
 
 ``` r
 library(crafter)
 library(testthat)
+#> 
+#> Attaching package: 'testthat'
+#> 
+#> The following object is masked from 'package:igraph':
+#> 
+#>     compare
 
 date()
-#> [1] "Sat Aug 15 11:18:54 2015"
+#> [1] "Sat Aug 15 13:46:49 2015"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================
