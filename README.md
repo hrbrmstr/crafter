@@ -27,10 +27,16 @@ The following functions are implemented:
 -   `read_pcap`: Read in a packet capture file
 -   `summary.crafter`: Print summary info about a packet capture
 
+(The `pcap` in the functions below is the return value from a call to `read_pcap`.)
+
+-   `pcap$get_layer`: return a data.frame with the indicated protocol layer from the pcap packets
+-   `pcap$packet_info`: retrieve a data frame of high level packet info
+
 (There are actually more but they're inside the pcap object and I just need to get them exposed. See the example below for usage.)
 
 ### News
 
+-   Version 0.1.2.9000 : added ICMP layer
 -   Version 0.1.1.9000 : restored packet number in data frame & added TCP layer
 -   Version 0.1.0.9000 : very basic functionality (IP layer)!
 -   Version 0.0.1.9000 : refactor into classed environment
@@ -49,7 +55,7 @@ library(crafter)
 
 # current verison
 packageVersion("crafter")
-#> [1] '0.1.0.9000'
+#> [1] '0.1.2.9000'
 
 library(crafter)
 library(dplyr)
@@ -210,6 +216,51 @@ head(hbot$get_layer("TCP"), 20)
 #> 19 FALSE FALSE  TRUE FALSE FALSE FALSE
 #> 20 FALSE FALSE  TRUE FALSE FALSE FALSE
 
+# look at the ICMP layer packets
+head(hbot$get_layer("ICMP"), 20)
+#>     num     tv_sec tv_usec            src            dst protocol_name identifier seqnum icmptype   icmpname code
+#> 1   197 1357916383  467873  192.168.0.200    192.168.0.1          ICMP        512    256        8       Echo    0
+#> 2   199 1357916383  574201    192.168.0.1  192.168.0.200          ICMP        512    256        0 Echo Reply    0
+#> 3   200 1357916384  494965  192.168.0.200    192.168.0.1          ICMP        512    512        8       Echo    0
+#> 4   201 1357916384  496694    192.168.0.1  192.168.0.200          ICMP        512    512        0 Echo Reply    0
+#> 5   202 1357916385  511023  192.168.0.200    192.168.0.1          ICMP        512    768        8       Echo    0
+#> 6   203 1357916385  512659    192.168.0.1  192.168.0.200          ICMP        512    768        0 Echo Reply    0
+#> 7   204 1357916386  512477  192.168.0.200    192.168.0.1          ICMP        512   1024        8       Echo    0
+#> 8   205 1357916386  514069    192.168.0.1  192.168.0.200          ICMP        512   1024        0 Echo Reply    0
+#> 9  3045 1357902753  893262  192.168.0.200    192.168.0.1          ICMP        512    256        8       Echo    0
+#> 10 3046 1357902753  894501    192.168.0.1  192.168.0.200          ICMP        512    256        0 Echo Reply    0
+#> 11 3047 1357902754  899395  192.168.0.200    192.168.0.1          ICMP        512    512        8       Echo    0
+#> 12 3048 1357902754  901673    192.168.0.1  192.168.0.200          ICMP        512    512        0 Echo Reply    0
+#> 13 3049 1357902755  899459  192.168.0.200    192.168.0.1          ICMP        512    768        8       Echo    0
+#> 14 3050 1357902755  902850    192.168.0.1  192.168.0.200          ICMP        512    768        0 Echo Reply    0
+#> 15 3053 1357902762  856809  192.168.0.200 173.194.67.106          ICMP        512   1024        8       Echo    0
+#> 16 3054 1357902762  881106 173.194.67.106  192.168.0.200          ICMP        512   1024        0 Echo Reply    0
+#> 17 3055 1357902763  870699  192.168.0.200 173.194.67.106          ICMP        512   1280        8       Echo    0
+#> 18 3056 1357902763  894322 173.194.67.106  192.168.0.200          ICMP        512   1280        0 Echo Reply    0
+#> 19 3057 1357902764  886429  192.168.0.200 173.194.67.106          ICMP        512   1536        8       Echo    0
+#> 20 3058 1357902764  913482 173.194.67.106  192.168.0.200          ICMP        512   1536        0 Echo Reply    0
+#>    chksum
+#> 1   19036
+#> 2   21084
+#> 3   18780
+#> 4   20828
+#> 5   18524
+#> 6   20572
+#> 7   18268
+#> 8   20316
+#> 9   19036
+#> 10  21084
+#> 11  18780
+#> 12  20828
+#> 13  18524
+#> 14  20572
+#> 15  18268
+#> 16  20316
+#> 17  18012
+#> 18  20060
+#> 19  17756
+#> 20  19804
+
 # see the protocol distribution
 hbot$get_layer("IP") %>% 
   count(protocol_name) %>% 
@@ -228,7 +279,7 @@ library(crafter)
 library(testthat)
 
 date()
-#> [1] "Fri Aug 14 22:40:08 2015"
+#> [1] "Fri Aug 14 23:25:05 2015"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

@@ -21,3 +21,7 @@ get_tcp_layer <- function(pcap) {
     .Call('crafter_get_tcp_layer', PACKAGE = 'crafter', pcap)
 }
 
+get_icmp_layer <- function(pcap) {
+    .Call('crafter_get_icmp_layer', PACKAGE = 'crafter', pcap)
+}
+

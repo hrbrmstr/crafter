@@ -40,12 +40,15 @@ read_pcap <- function(capture_file, filter="") {
     }
 
     #' @describeIn get_layer retrieve a specific layer type
-    get_layer <- function(layer_name=c("Ethernet", "IP", "TCP",
+    get_layer <- function(layer_name=c("Ethernet", "IP", "TCP", "ICMP",
                                        "TCPOptionMaxSegSize", "TCPOptionPad",
                                        "TCPOptionSACKPermitted")) {
       switch(layer_name,
-#             Ethernet=get_ethernet_layer(private$pcap),
+             icmp=,
+             ICMP=go_get_icmp_layer(private$pcap, first_packet()),
+             tcp=,
              TCP=go_get_tcp_layer(private$pcap, first_packet()),
+             ip=,
              IP=go_get_ip_layer(private$pcap, first_packet()),
              stop(sprintf("'%s' decoding not implemented yet", layer_name)))
     }

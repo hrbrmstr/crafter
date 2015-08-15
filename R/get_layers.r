@@ -30,3 +30,21 @@ go_get_tcp_layer <- function(pcap, first_packet) {
         "fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr")]
 
 }
+
+go_get_icmp_layer <- function(pcap, first_packet) {
+
+  icmp <- get_icmp_layer(pcap)
+
+  icmp <- merge(icmp, protocol_numbers[, c("protocol", "protocol_name")],
+              by.x="protocol", by.y="protocol")
+
+  icmp <- merge(icmp, icmp_type_numbers,
+              by.x="icmptype", by.y="icmptype")
+
+  icmp <- arrange(icmp, num)
+
+  icmp[,c("num", "tv_sec", "tv_usec", "src", "dst",
+        "protocol_name", "identifier", "seqnum", "icmptype", "icmpname",
+        "code", "chksum")]
+
+}

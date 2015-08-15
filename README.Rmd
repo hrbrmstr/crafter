@@ -43,10 +43,16 @@ The following functions are implemented:
 - `read_pcap`:	Read in a packet capture file
 - `summary.crafter`:	Print summary info about a packet capture
 
+(The `pcap` in the functions below is the return value from a call to `read_pcap`.)
+
+- `pcap$get_layer`: return a data.frame with the indicated protocol layer from the pcap packets
+- `pcap$packet_info`: retrieve a data frame of high level packet info
+
 (There are actually more but they're inside the pcap object and I just need to get them exposed. See the example below for usage.)
 
 ### News
 
+- Version 0.1.2.9000 : added ICMP layer
 - Version 0.1.1.9000 : restored packet number in data frame & added TCP layer
 - Version 0.1.0.9000 : very basic functionality (IP layer)!
 - Version 0.0.1.9000 : refactor into classed environment
@@ -89,6 +95,9 @@ head(hbot$get_layer("IP"), 20)
 
 # look at the TCP layer packets
 head(hbot$get_layer("TCP"), 20)
+
+# look at the ICMP layer packets
+head(hbot$get_layer("ICMP"), 20)
 
 # see the protocol distribution
 hbot$get_layer("IP") %>% 
