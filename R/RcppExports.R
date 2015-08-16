@@ -9,8 +9,12 @@ num_packets <- function(pcap) {
     .Call('crafter_num_packets', PACKAGE = 'crafter', pcap)
 }
 
-get_payload_for <- function(pcap, packet_num) {
-    .Call('crafter_get_payload_for', PACKAGE = 'crafter', pcap, packet_num)
+crafter_get_ips <- function(pcap, src_or_dst = "src") {
+    .Call('crafter_crafter_get_ips', PACKAGE = 'crafter', pcap, src_or_dst)
+}
+
+get_icmp_layer <- function(pcap) {
+    .Call('crafter_get_icmp_layer', PACKAGE = 'crafter', pcap)
 }
 
 get_packet_info <- function(pcap) {
@@ -21,11 +25,11 @@ get_ip_layer <- function(pcap) {
     .Call('crafter_get_ip_layer', PACKAGE = 'crafter', pcap)
 }
 
-get_tcp_layer <- function(pcap) {
-    .Call('crafter_get_tcp_layer', PACKAGE = 'crafter', pcap)
+get_payload_for <- function(pcap, packet_num) {
+    .Call('crafter_get_payload_for', PACKAGE = 'crafter', pcap, packet_num)
 }
 
-get_icmp_layer <- function(pcap) {
-    .Call('crafter_get_icmp_layer', PACKAGE = 'crafter', pcap)
+get_tcp_layer <- function(pcap) {
+    .Call('crafter_get_tcp_layer', PACKAGE = 'crafter', pcap)
 }
 

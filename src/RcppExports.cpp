@@ -29,15 +29,26 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// get_payload_for
-CharacterVector get_payload_for(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap, int packet_num);
-RcppExport SEXP crafter_get_payload_for(SEXP pcapSEXP, SEXP packet_numSEXP) {
+// crafter_get_ips
+std::vector<std::string> crafter_get_ips(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap, std::string src_or_dst);
+RcppExport SEXP crafter_crafter_get_ips(SEXP pcapSEXP, SEXP src_or_dstSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Crafter::Packet*> > >::type pcap(pcapSEXP);
-    Rcpp::traits::input_parameter< int >::type packet_num(packet_numSEXP);
-    __result = Rcpp::wrap(get_payload_for(pcap, packet_num));
+    Rcpp::traits::input_parameter< std::string >::type src_or_dst(src_or_dstSEXP);
+    __result = Rcpp::wrap(crafter_get_ips(pcap, src_or_dst));
+    return __result;
+END_RCPP
+}
+// get_icmp_layer
+DataFrame get_icmp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap);
+RcppExport SEXP crafter_get_icmp_layer(SEXP pcapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Crafter::Packet*> > >::type pcap(pcapSEXP);
+    __result = Rcpp::wrap(get_icmp_layer(pcap));
     return __result;
 END_RCPP
 }
@@ -63,6 +74,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// get_payload_for
+CharacterVector get_payload_for(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap, int packet_num);
+RcppExport SEXP crafter_get_payload_for(SEXP pcapSEXP, SEXP packet_numSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Crafter::Packet*> > >::type pcap(pcapSEXP);
+    Rcpp::traits::input_parameter< int >::type packet_num(packet_numSEXP);
+    __result = Rcpp::wrap(get_payload_for(pcap, packet_num));
+    return __result;
+END_RCPP
+}
 // get_tcp_layer
 List get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap);
 RcppExport SEXP crafter_get_tcp_layer(SEXP pcapSEXP) {
@@ -71,17 +94,6 @@ BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Crafter::Packet*> > >::type pcap(pcapSEXP);
     __result = Rcpp::wrap(get_tcp_layer(pcap));
-    return __result;
-END_RCPP
-}
-// get_icmp_layer
-DataFrame get_icmp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap);
-RcppExport SEXP crafter_get_icmp_layer(SEXP pcapSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Crafter::Packet*> > >::type pcap(pcapSEXP);
-    __result = Rcpp::wrap(get_icmp_layer(pcap));
     return __result;
 END_RCPP
 }

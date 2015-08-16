@@ -19,7 +19,7 @@ If there's any hope for this to run on Windows (`libcrafter` supports Windows) i
 
 You can find some sample PCAP files:
 
--   [Netresec](https://wiki.wireshark.org/SampleCaptures)
+-   [Netresec](http://www.netresec.com/?page=PcapFiles)
 -   [Wireshark](https://wiki.wireshark.org/SampleCaptures)
 
 The following functions are implemented:
@@ -32,11 +32,14 @@ The following functions are implemented:
 -   `pcap$get_layer`: return a data.frame with the indicated protocol layer from the pcap packets
 -   `pcap$packet_info`: retrieve a data frame of high level packet info
 -   `pcap$get_payload`: retrieve payload (if any) from a given packet number
+-   `pcap$get_ips`: retrieve a list (with counts) of src/dst/all ips in the capture
+-   `pcap$summary`: summary info about the capture
 
 (There are actually more but they're inside the pcap object and I just need to get them exposed. See the example below for usage.)
 
 ### News
 
+-   Version 0.1.5.9000 : better documentation & examples + `get_ips` function
 -   Version 0.1.3.9000 : rudimentary payload data!
 -   Version 0.1.2.9000 : added ICMP layer
 -   Version 0.1.1.9000 : restored packet number in data frame & added TCP layer
@@ -57,7 +60,7 @@ library(crafter)
 
 # current verison
 packageVersion("crafter")
-#> [1] '0.1.3.9000'
+#> [1] '0.1.5.9000'
 
 library(crafter)
 library(dplyr)
@@ -195,12 +198,12 @@ head(hbot$get_layer("TCP"), 5)
 #> 3   9 1357913763   60517  192.168.0.200 91.199.212.171           TCP    1033      80 3814599573 1804036197         20
 #> 4  10 1357913763   61083  192.168.0.200 91.199.212.171           TCP    1033      80 3814599573 1804036197         20
 #> 5  11 1357913763   89809 91.199.212.171  192.168.0.200           TCP      80    1033 1804036197 3814599681         20
-#>   payloadsize   fin   syn   rst   psh   ack   urg   ece   cwr
-#> 1           0 FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
-#> 2           0 FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 3           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-#> 4         108 FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
-#> 5           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+#>   payloadsize   fin   syn   rst   psh   ack   urg   ece   cwr windowsize chksum optsize
+#> 1           0 FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE      64240  33535       8
+#> 2           0 FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE      14600  28907       8
+#> 3           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE      64240  56262       0
+#> 4         108 FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE      64240  26399       0
+#> 5           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE      14600  40259       0
 #>                                                                                                                  payload
 #> 1                                                                                                                       
 #> 2                                                                                                                       
@@ -554,7 +557,7 @@ library(testthat)
 #>     compare
 
 date()
-#> [1] "Sat Aug 15 13:48:44 2015"
+#> [1] "Sun Aug 16 13:33:59 2015"
 
 test_dir("tests/")
 #> testthat results ========================================================================================================

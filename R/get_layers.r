@@ -1,3 +1,5 @@
+# helper function to retrieve the IP layer, add some extra meta info
+# and return sorted by packet
 go_get_ip_layer <- function(pcap, first_packet) {
 
   ip <- get_ip_layer(pcap)
@@ -16,10 +18,13 @@ go_get_ip_layer <- function(pcap, first_packet) {
 
 }
 
+# helper function to retrieve the TCP layer, add some extra meta info
+# and return sorted by packet #
 go_get_tcp_layer <- function(pcap, first_packet) {
 
+  # max size for Rcpp::List and Rcpp:DataFrame is 20 members so
+  # we have to cbind here
   tcp <- do.call(cbind.data.frame, get_tcp_layer(pcap))
-  # tcp <- as.data.frame(, stringsAsFactors=FALSE)
 
   tcp <- merge(tcp, protocol_numbers[, c("protocol", "protocol_name")],
               by.x="protocol", by.y="protocol")
@@ -29,10 +34,14 @@ go_get_tcp_layer <- function(pcap, first_packet) {
   tcp[,c("num", "tv_sec", "tv_usec", "src", "dst",
         "protocol_name", "srcport", "dstport", "seqnum", "acknum",
         "headersize", "payloadsize",
-        "fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr", "payload")]
+        "fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr",
+        "windowsize", "chksum", "optsize", "payload")]
+
 
 }
 
+# helper function to retrieve the ICMP layer, add some extra meta info
+# and return sorted by packet #
 go_get_icmp_layer <- function(pcap, first_packet) {
 
   icmp <- get_icmp_layer(pcap)
