@@ -70,15 +70,15 @@ read_pcap <- function(capture_file, filter = "") {
 
     get_ips <- function(src_or_dst="src") {
       switch(tolower(src_or_dst),
-        source,
+        source=,
         src=return(count(data_frame(ip=crafter_get_ips(private$pcap, src_or_dst)), ip)),
-        dest,
-        destination,
+        dest=,
+        destination=,
         dst=return(count(data_frame(ip=crafter_get_ips(private$pcap, src_or_dst)), ip)),
-        both,
+        both=,
         all=return(count(bind_rows(data_frame(ip=crafter_get_ips(private$pcap, "src")),
                                    data_frame(ip=crafter_get_ips(private$pcap, "dst"))), ip)),
-        stop("'src_or_dst' must be one of 'src', 'dst' or 'dst'", call.=FALSE)
+        stop("'src_or_dst' must be one of 'src', 'dst' or 'dst' or 'both'", call.=FALSE)
       )
 
     }
