@@ -48,7 +48,7 @@
 #' @useDynLib crafter
 #' @importFrom Rcpp sourceCpp
 #' @importFrom stringr str_trim str_split
-#' @importFrom dplyr data_frame bind_rows bind_cols mutate arrange count
+#' @importFrom dplyr data_frame bind_rows bind_cols mutate arrange count %>%
 #' @importFrom tidyr separate
 #' @importFrom crayon bold red
 NULL

@@ -58,7 +58,7 @@ read_pcap <- function(capture_file, filter = "") {
 
     private$pcap <- load_pcap(filename, filter)
 
-    #' @describeIn packet_count total # of packets in the capture
+    # @describeIn packet_count total # of packets in the capture
     packet_count <- num_packets(private$pcap)
 
     first_packet <- function() {
@@ -83,7 +83,7 @@ read_pcap <- function(capture_file, filter = "") {
 
     }
 
-    #' @describeIn packet_info retrieve high level packet information
+    # @describeIn packet_info retrieve high level packet information
     packet_info <- function() {
       dat <- get_packet_info(private$pcap)
       dat$protocols <- sapply(str_split(dat$protocols, ","),
@@ -105,7 +105,7 @@ read_pcap <- function(capture_file, filter = "") {
       get_payload_for(private$pcap, num)
     }
 
-    #' @describeIn get_layer retrieve a specific layer type
+    # @describeIn get_layer retrieve a specific layer type
     get_layer <-
       function(layer_name = c(
         "Ethernet",
@@ -126,7 +126,7 @@ read_pcap <- function(capture_file, filter = "") {
         )
       }
 
-    #' @describeIn summary get summary of the packet capture
+    # @describeIn summary get summary of the packet capture
     summary <- function() {
       pkts <- packet_info()
 

@@ -13,21 +13,23 @@ struct node {
   node *next;
 };
 
+#include "crafter_types.h"
+
 node pcaplist = *(new node);
 node *lstail = &pcaplist;
 
 // need this for the Xptr
-typedef Crafter::Packet* MyPacket;
+//typedef Crafter::Packet* MyPacket;
 
 void pcap_finalizer( std::vector<Packet*>* pcap ) { };
 void pcap_packet_finalizer( MyPacket *pcap_packet ) { };
 
 // this makes it possible to maintain a list of loaded PCAP files and provide
 // an interface back to R
-typedef XPtr<std::vector<Packet*>, PreserveStorage, pcap_finalizer> pcapptr;
+//typedef XPtr<std::vector<Packet*>, PreserveStorage, pcap_finalizer> pcapptr;
 
 // pointers to specific packets
-typedef XPtr<MyPacket, PreserveStorage, pcap_packet_finalizer> pcap_packet_ptr;
+//typedef XPtr<MyPacket, PreserveStorage, pcap_packet_finalizer> pcap_packet_ptr;
 
 // custom (internal) ReadPcap function since we might want the link_type
 // available and may be able to optimize some things later on
