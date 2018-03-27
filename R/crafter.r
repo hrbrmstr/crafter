@@ -47,11 +47,13 @@
 #' # get packet payload
 #' ncap$get_payload(7119)
 read_pcap <- function(capture_file, filter = "") {
+
   # Private fields
   private <- environment()
 
   # Public methods
   this <- local({
+
     filename <- path.expand(capture_file)
 
     filter_applied <- filter
@@ -61,12 +63,9 @@ read_pcap <- function(capture_file, filter = "") {
     # @describeIn packet_count total # of packets in the capture
     packet_count <- num_packets(private$pcap)
 
-    first_packet <- function() {
-      private$first
-    }
-    last_packet <- function() {
-      private$last
-    }
+    first_packet <- function() { private$first }
+
+    last_packet <- function() { private$last }
 
     get_ips <- function(src_or_dst="src") {
       switch(tolower(src_or_dst),
@@ -101,9 +100,7 @@ read_pcap <- function(capture_file, filter = "") {
               "packet_size")]
     }
 
-    get_payload <- function(num) {
-      get_payload_for(private$pcap, num)
-    }
+    get_payload <- function(num) { get_payload_for(private$pcap, num) }
 
     # @describeIn get_layer retrieve a specific layer type
     get_layer <-

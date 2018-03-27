@@ -49,4 +49,4 @@ icmp_type_numbers <- structure(list(icmptype = 0:255, icmpname = c("Echo Reply",
 "Reserved", "Reserved", "Reserved", "Reserved", "Reserved", "Reserved",
 "Reserved", "Reserved", "Reserved", "Reserved", "Reserved", "Reserved",
 "Reserved")), .Names = c("icmptype", "icmpname"), row.names = c(NA,
-256L), class = "data.frame")
+256L), class = c("tbl_df", "tbl", "data.frame"))

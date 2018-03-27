@@ -38,6 +38,7 @@ You can find some sample PCAP files:
 The following functions are implemented:
 
   - `read_pcap`: Read in a packet capture file
+  - `seq_in`: Find a (the first) sequence in a vector
   - `summary.crafter`: Print summary info about a packet capture
 
 (The `pcap` in the functions below is the return value from a call to
@@ -72,27 +73,8 @@ packageVersion("crafter")
 
 library(crafter)
 library(dplyr)
-## 
-## Attaching package: 'dplyr'
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
 library(ggplot2)
 library(igraph)
-## 
-## Attaching package: 'igraph'
-## The following objects are masked from 'package:dplyr':
-## 
-##     as_data_frame, groups, union
-## The following objects are masked from 'package:stats':
-## 
-##     decompose, spectrum
-## The following object is masked from 'package:base':
-## 
-##     union
 
 # read in the "honeybot" packet capture from the "Capture the hacker 2013"
 # competition (by Dr. David Day of Sheffield Hallam University) http://www.snaketrap.co.uk/
@@ -116,38 +98,24 @@ summary(hbot)
 
 # look at general packet info
 head(hbot$packet_info(), 15)
-##    num     tv_sec tv_usec layer_count                                                               protocols
-## 1    1 1357913756  642112           4                                                Ethernet,IP,RawLayer,UDP
-## 2    2 1357913756  652518           4                                                Ethernet,IP,RawLayer,UDP
-## 3    3 1357913756  661374           4                                                Ethernet,IP,RawLayer,UDP
-## 4    4 1357913756  768192           4                                                Ethernet,IP,RawLayer,UDP
-## 5    5 1357913763   22726           4                                                Ethernet,IP,RawLayer,UDP
-## 6    6 1357913763   32152           4                                                Ethernet,IP,RawLayer,UDP
-## 7    7 1357913763   34026           7 Ethernet,IP,TCP,TCPOptionMaxSegSize,TCPOptionPad,TCPOptionSACKPermitted
-## 8    8 1357913763   60454           7 Ethernet,IP,TCP,TCPOptionMaxSegSize,TCPOptionPad,TCPOptionSACKPermitted
-## 9    9 1357913763   60517           3                                                         Ethernet,IP,TCP
-## 10  10 1357913763   61083           4                                                Ethernet,IP,RawLayer,TCP
-## 11  11 1357913763   89809           3                                                         Ethernet,IP,TCP
-## 12  12 1357913763   90103           4                                                Ethernet,IP,RawLayer,TCP
-## 13  13 1357913763  137534           4                                                Ethernet,IP,RawLayer,UDP
-## 14  14 1357913763  147996           4                                                Ethernet,IP,RawLayer,UDP
-## 15  15 1357913763  149377           7 Ethernet,IP,TCP,TCPOptionMaxSegSize,TCPOptionPad,TCPOptionSACKPermitted
-##    packet_size
-## 1           83
-## 2          195
-## 3           88
-## 4           61
-## 5           79
-## 6           95
-## 7           62
-## 8           62
-## 9           54
-## 10         162
-## 11          54
-## 12         452
-## 13          80
-## 14          96
-## 15          62
+## # A tibble: 15 x 6
+##      num     tv_sec tv_usec layer_count protocols                                                           packet_size
+##    <int>      <int>   <int>       <int> <chr>                                                                     <int>
+##  1     1 1357913756  642112           4 Ethernet,IP,RawLayer,UDP                                                     83
+##  2     2 1357913756  652518           4 Ethernet,IP,RawLayer,UDP                                                    195
+##  3     3 1357913756  661374           4 Ethernet,IP,RawLayer,UDP                                                     88
+##  4     4 1357913756  768192           4 Ethernet,IP,RawLayer,UDP                                                     61
+##  5     5 1357913763   22726           4 Ethernet,IP,RawLayer,UDP                                                     79
+##  6     6 1357913763   32152           4 Ethernet,IP,RawLayer,UDP                                                     95
+##  7     7 1357913763   34026           7 Ethernet,IP,TCP,TCPOptionMaxSegSize,TCPOptionPad,TCPOptionSACKPerm…          62
+##  8     8 1357913763   60454           7 Ethernet,IP,TCP,TCPOptionMaxSegSize,TCPOptionPad,TCPOptionSACKPerm…          62
+##  9     9 1357913763   60517           3 Ethernet,IP,TCP                                                              54
+## 10    10 1357913763   61083           4 Ethernet,IP,RawLayer,TCP                                                    162
+## 11    11 1357913763   89809           3 Ethernet,IP,TCP                                                              54
+## 12    12 1357913763   90103           4 Ethernet,IP,RawLayer,TCP                                                    452
+## 13    13 1357913763  137534           4 Ethernet,IP,RawLayer,UDP                                                     80
+## 14    14 1357913763  147996           4 Ethernet,IP,RawLayer,UDP                                                     96
+## 15    15 1357913763  149377           7 Ethernet,IP,TCP,TCPOptionMaxSegSize,TCPOptionPad,TCPOptionSACKPerm…          62
 
 # look at the IP layer packets
 hbot_ip <- hbot$get_layer("IP")
@@ -170,49 +138,32 @@ plot(g, layout=layout.circle, vertex.size=sqrt(degree(g)),
 ``` r
 # look at the data
 head(hbot_ip, 10)
-##    num     tv_sec tv_usec            src            dst protocol_name size header_len total_len ttl flags flag_bits
-## 1    1 1357913756  642112  192.168.0.200  194.168.4.100           UDP   83          5        69 128     0       000
-## 2    2 1357913756  652518  194.168.4.100  192.168.0.200           UDP  195          5       181 253     2       010
-## 3    3 1357913756  661374  192.168.0.200  199.66.201.20           UDP   88          5        74 128     0       000
-## 4    4 1357913756  768192  199.66.201.20  192.168.0.200           UDP   61          5        47  51     2       010
-## 5    5 1357913763   22726  192.168.0.200  194.168.4.100           UDP   79          5        65 128     0       000
-## 6    6 1357913763   32152  194.168.4.100  192.168.0.200           UDP   95          5        81 253     2       010
-## 7    7 1357913763   34026  192.168.0.200 91.199.212.171           TCP   62          5        48 128     2       010
-## 8    8 1357913763   60454 91.199.212.171  192.168.0.200           TCP   62          5        48  49     2       010
-## 9    9 1357913763   60517  192.168.0.200 91.199.212.171           TCP   54          5        40 128     2       010
-## 10  10 1357913763   61083  192.168.0.200 91.199.212.171           TCP  162          5       148 128     2       010
-##    dscp frag_ofs
-## 1     0        0
-## 2     0        0
-## 3     0        0
-## 4     0        0
-## 5     0        0
-## 6     0        0
-## 7     0        0
-## 8     0        0
-## 9     0        0
-## 10    0        0
+## # A tibble: 10 x 14
+##      num     tv_sec tv_usec src    dst    protocol_name  size header_len total_len   ttl flags flag_bits  dscp frag_ofs
+##    <int>      <int>   <int> <chr>  <chr>  <chr>         <int>      <int>     <int> <int> <int> <chr>     <int>    <int>
+##  1     1 1357913756  642112 192.1… 194.1… UDP              83          5        69   128     0 000           0        0
+##  2     2 1357913756  652518 194.1… 192.1… UDP             195          5       181   253     2 010           0        0
+##  3     3 1357913756  661374 192.1… 199.6… UDP              88          5        74   128     0 000           0        0
+##  4     4 1357913756  768192 199.6… 192.1… UDP              61          5        47    51     2 010           0        0
+##  5     5 1357913763   22726 192.1… 194.1… UDP              79          5        65   128     0 000           0        0
+##  6     6 1357913763   32152 194.1… 192.1… UDP              95          5        81   253     2 010           0        0
+##  7     7 1357913763   34026 192.1… 91.19… TCP              62          5        48   128     2 010           0        0
+##  8     8 1357913763   60454 91.19… 192.1… TCP              62          5        48    49     2 010           0        0
+##  9     9 1357913763   60517 192.1… 91.19… TCP              54          5        40   128     2 010           0        0
+## 10    10 1357913763   61083 192.1… 91.19… TCP             162          5       148   128     2 010           0        0
 
 # look at the TCP layer packets
 head(hbot$get_layer("TCP"), 5)
-##   num     tv_sec tv_usec            src            dst protocol_name srcport dstport     seqnum     acknum headersize
-## 1   7 1357913763   34026  192.168.0.200 91.199.212.171           TCP    1033      80 3814599572          0         20
-## 2   8 1357913763   60454 91.199.212.171  192.168.0.200           TCP      80    1033 1804036196 3814599573         20
-## 3   9 1357913763   60517  192.168.0.200 91.199.212.171           TCP    1033      80 3814599573 1804036197         20
-## 4  10 1357913763   61083  192.168.0.200 91.199.212.171           TCP    1033      80 3814599573 1804036197         20
-## 5  11 1357913763   89809 91.199.212.171  192.168.0.200           TCP      80    1033 1804036197 3814599681         20
-##   payloadsize   fin   syn   rst   psh   ack   urg   ece   cwr windowsize chksum optsize
-## 1           0 FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE      64240  33535       8
-## 2           0 FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE      14600  28907       8
-## 3           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE      64240  56262       0
-## 4         108 FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE      64240  26399       0
-## 5           0 FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE      14600  40259       0
-##                                                                                                                  payload
-## 1                                                                                                                       
-## 2                                                                                                                       
-## 3                                                                                                                       
-## 4 GET /av/tvl/deletedvendors.txt HTTP/1.1\r\nAccept: */*\r\nHost: download.comodo.com\r\nCache-Control: no-cache\r\n\r\n
-## 5
+## # A tibble: 5 x 24
+##     num tv_sec tv_usec src   dst   protocol_name srcport dstport seqnum acknum headersize payloadsize fin   syn   rst  
+##   <int>  <int>   <int> <chr> <chr> <chr>           <int>   <int>  <dbl>  <dbl>      <int>       <int> <lgl> <lgl> <lgl>
+## 1     7 1.36e⁹   34026 192.… 91.1… TCP              1033      80 3.81e⁹ 0.             20           0 FALSE TRUE  FALSE
+## 2     8 1.36e⁹   60454 91.1… 192.… TCP                80    1033 1.80e⁹ 3.81e⁹         20           0 FALSE TRUE  FALSE
+## 3     9 1.36e⁹   60517 192.… 91.1… TCP              1033      80 3.81e⁹ 1.80e⁹         20           0 FALSE FALSE FALSE
+## 4    10 1.36e⁹   61083 192.… 91.1… TCP              1033      80 3.81e⁹ 1.80e⁹         20         108 FALSE FALSE FALSE
+## 5    11 1.36e⁹   89809 91.1… 192.… TCP                80    1033 1.80e⁹ 3.81e⁹         20           0 FALSE FALSE FALSE
+## # ... with 9 more variables: psh <lgl>, ack <lgl>, urg <lgl>, ece <lgl>, cwr <lgl>, windowsize <dbl>, chksum <dbl>,
+## #   optsize <dbl>, payload <chr>
 
 # this is probably a bit more useful
 hbot_tcp <- hbot$get_layer("TCP")
@@ -493,48 +444,29 @@ cat(paste0(pays$payload[1:25], collapse="\n"))
 
 # look at the ICMP layer packets
 head(hbot$get_layer("ICMP"), 20)
-##     num     tv_sec tv_usec            src            dst protocol_name identifier seqnum icmptype   icmpname code
-## 1   197 1357916383  467873  192.168.0.200    192.168.0.1          ICMP        512    256        8       Echo    0
-## 2   199 1357916383  574201    192.168.0.1  192.168.0.200          ICMP        512    256        0 Echo Reply    0
-## 3   200 1357916384  494965  192.168.0.200    192.168.0.1          ICMP        512    512        8       Echo    0
-## 4   201 1357916384  496694    192.168.0.1  192.168.0.200          ICMP        512    512        0 Echo Reply    0
-## 5   202 1357916385  511023  192.168.0.200    192.168.0.1          ICMP        512    768        8       Echo    0
-## 6   203 1357916385  512659    192.168.0.1  192.168.0.200          ICMP        512    768        0 Echo Reply    0
-## 7   204 1357916386  512477  192.168.0.200    192.168.0.1          ICMP        512   1024        8       Echo    0
-## 8   205 1357916386  514069    192.168.0.1  192.168.0.200          ICMP        512   1024        0 Echo Reply    0
-## 9  3045 1357902753  893262  192.168.0.200    192.168.0.1          ICMP        512    256        8       Echo    0
-## 10 3046 1357902753  894501    192.168.0.1  192.168.0.200          ICMP        512    256        0 Echo Reply    0
-## 11 3047 1357902754  899395  192.168.0.200    192.168.0.1          ICMP        512    512        8       Echo    0
-## 12 3048 1357902754  901673    192.168.0.1  192.168.0.200          ICMP        512    512        0 Echo Reply    0
-## 13 3049 1357902755  899459  192.168.0.200    192.168.0.1          ICMP        512    768        8       Echo    0
-## 14 3050 1357902755  902850    192.168.0.1  192.168.0.200          ICMP        512    768        0 Echo Reply    0
-## 15 3053 1357902762  856809  192.168.0.200 173.194.67.106          ICMP        512   1024        8       Echo    0
-## 16 3054 1357902762  881106 173.194.67.106  192.168.0.200          ICMP        512   1024        0 Echo Reply    0
-## 17 3055 1357902763  870699  192.168.0.200 173.194.67.106          ICMP        512   1280        8       Echo    0
-## 18 3056 1357902763  894322 173.194.67.106  192.168.0.200          ICMP        512   1280        0 Echo Reply    0
-## 19 3057 1357902764  886429  192.168.0.200 173.194.67.106          ICMP        512   1536        8       Echo    0
-## 20 3058 1357902764  913482 173.194.67.106  192.168.0.200          ICMP        512   1536        0 Echo Reply    0
-##    chksum
-## 1   19036
-## 2   21084
-## 3   18780
-## 4   20828
-## 5   18524
-## 6   20572
-## 7   18268
-## 8   20316
-## 9   19036
-## 10  21084
-## 11  18780
-## 12  20828
-## 13  18524
-## 14  20572
-## 15  18268
-## 16  20316
-## 17  18012
-## 18  20060
-## 19  17756
-## 20  19804
+## # A tibble: 20 x 12
+##      num     tv_sec tv_usec src            dst          protocol_name identifier seqnum icmptype icmpname   code chksum
+##    <int>      <int>   <int> <chr>          <chr>        <chr>              <dbl>  <dbl>    <int> <chr>     <int>  <dbl>
+##  1   197 1357916383  467873 192.168.0.200  192.168.0.1  ICMP                512.   256.        8 Echo          0 19036.
+##  2   199 1357916383  574201 192.168.0.1    192.168.0.2… ICMP                512.   256.        0 Echo Rep…     0 21084.
+##  3   200 1357916384  494965 192.168.0.200  192.168.0.1  ICMP                512.   512.        8 Echo          0 18780.
+##  4   201 1357916384  496694 192.168.0.1    192.168.0.2… ICMP                512.   512.        0 Echo Rep…     0 20828.
+##  5   202 1357916385  511023 192.168.0.200  192.168.0.1  ICMP                512.   768.        8 Echo          0 18524.
+##  6   203 1357916385  512659 192.168.0.1    192.168.0.2… ICMP                512.   768.        0 Echo Rep…     0 20572.
+##  7   204 1357916386  512477 192.168.0.200  192.168.0.1  ICMP                512.  1024.        8 Echo          0 18268.
+##  8   205 1357916386  514069 192.168.0.1    192.168.0.2… ICMP                512.  1024.        0 Echo Rep…     0 20316.
+##  9  3045 1357902753  893262 192.168.0.200  192.168.0.1  ICMP                512.   256.        8 Echo          0 19036.
+## 10  3046 1357902753  894501 192.168.0.1    192.168.0.2… ICMP                512.   256.        0 Echo Rep…     0 21084.
+## 11  3047 1357902754  899395 192.168.0.200  192.168.0.1  ICMP                512.   512.        8 Echo          0 18780.
+## 12  3048 1357902754  901673 192.168.0.1    192.168.0.2… ICMP                512.   512.        0 Echo Rep…     0 20828.
+## 13  3049 1357902755  899459 192.168.0.200  192.168.0.1  ICMP                512.   768.        8 Echo          0 18524.
+## 14  3050 1357902755  902850 192.168.0.1    192.168.0.2… ICMP                512.   768.        0 Echo Rep…     0 20572.
+## 15  3053 1357902762  856809 192.168.0.200  173.194.67.… ICMP                512.  1024.        8 Echo          0 18268.
+## 16  3054 1357902762  881106 173.194.67.106 192.168.0.2… ICMP                512.  1024.        0 Echo Rep…     0 20316.
+## 17  3055 1357902763  870699 192.168.0.200  173.194.67.… ICMP                512.  1280.        8 Echo          0 18012.
+## 18  3056 1357902763  894322 173.194.67.106 192.168.0.2… ICMP                512.  1280.        0 Echo Rep…     0 20060.
+## 19  3057 1357902764  886429 192.168.0.200  173.194.67.… ICMP                512.  1536.        8 Echo          0 17756.
+## 20  3058 1357902764  913482 173.194.67.106 192.168.0.2… ICMP                512.  1536.        0 Echo Rep…     0 19804.
 
 # see the protocol distribution
 hbot$get_layer("IP") %>% 

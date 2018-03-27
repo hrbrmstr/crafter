@@ -65,7 +65,7 @@ DataFrame get_ip_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
 
   }
 
-  return DataFrame::create(_["num"] = num,
+  DataFrame ret1 = DataFrame::create(_["num"] = num,
                            _["tv_sec"] = tssec,
                            _["tv_usec"] = tsusec,
                            _["src"] = src,
@@ -79,6 +79,9 @@ DataFrame get_ip_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
                            _["dscp"] = dscp,
                            _["frag_ofs"] = fragofs,
                            _["stringsAsFactors"] = false);
+  ret1.attr("class") = CharacterVector::create("tbl_df", "tbl", "data.frame");
+
+  return(ret1);
 
 }
 

@@ -10,11 +10,15 @@ go_get_ip_layer <- function(pcap, first_packet) {
   ip <- merge(ip, protocol_numbers[, c("protocol", "protocol_name")],
               by.x="protocol", by.y="protocol")
 
-  ip <- arrange(ip, num)
+  ip <- dplyr::arrange(ip, num)
 
-  ip[,c("num", "tv_sec", "tv_usec", "src", "dst",
+  out <- ip[,c("num", "tv_sec", "tv_usec", "src", "dst",
         "protocol_name", "size", "header_len", "total_len", "ttl", "flags",
         "flag_bits", "dscp", "frag_ofs")]
+
+  class(out) <- c("tbl_df", "tbl", "data.frame")
+
+  out
 
 }
 
@@ -29,13 +33,17 @@ go_get_tcp_layer <- function(pcap, first_packet) {
   tcp <- merge(tcp, protocol_numbers[, c("protocol", "protocol_name")],
               by.x="protocol", by.y="protocol")
 
-  tcp <- arrange(tcp, num)
+  tcp <- dplyr::arrange(tcp, num)
 
-  tcp[,c("num", "tv_sec", "tv_usec", "src", "dst",
+  out <- tcp[,c("num", "tv_sec", "tv_usec", "src", "dst",
         "protocol_name", "srcport", "dstport", "seqnum", "acknum",
         "headersize", "payloadsize",
         "fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr",
         "windowsize", "chksum", "optsize", "payload")]
+
+  class(out) <- c("tbl_df", "tbl", "data.frame")
+
+  out
 
 
 }
@@ -52,10 +60,14 @@ go_get_icmp_layer <- function(pcap, first_packet) {
   icmp <- merge(icmp, icmp_type_numbers,
               by.x="icmptype", by.y="icmptype")
 
-  icmp <- arrange(icmp, num)
+  icmp <- dplyr::arrange(icmp, num)
 
-  icmp[,c("num", "tv_sec", "tv_usec", "src", "dst",
+  out <- icmp[,c("num", "tv_sec", "tv_usec", "src", "dst",
         "protocol_name", "identifier", "seqnum", "icmptype", "icmpname",
         "code", "chksum")]
+
+  class(out) <- c("tbl_df", "tbl", "data.frame")
+
+  out
 
 }

@@ -3,6 +3,7 @@
 S3method(print,crafter)
 S3method(summary,crafter)
 export(read_pcap)
+export(seq_in)
 importFrom(Rcpp,sourceCpp)
 importFrom(crayon,bold)
 importFrom(crayon,red)

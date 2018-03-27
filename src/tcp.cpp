@@ -70,6 +70,7 @@ List get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
       seqnum.push_back((unsigned int)tcp_layer->GetSeqNumber());
       acknum.push_back((unsigned int)tcp_layer->GetAckNumber());
       headersize.push_back((int)tcp_layer->GetHeaderSize());
+
       if (raw_layer) {
         payloadsize.push_back((int)raw_layer->GetPayloadSize());
         payload.push_back(raw_layer->GetStringPayload());
@@ -77,6 +78,7 @@ List get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
         payloadsize.push_back((int)tcp_layer->GetPayloadSize());
         payload.push_back("");
       }
+
       fin.push_back((int)tcp_layer->GetFIN());
       syn.push_back((int)tcp_layer->GetSYN());
       rst.push_back((int)tcp_layer->GetRST());
@@ -126,6 +128,9 @@ List get_tcp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
                            _["chksum"] = chksum,
                            _["optsize"] = optsize,
                            _["stringsAsFactors"] = false);
+
+  ret1.attr("class") = CharacterVector::create("tbl_df", "tbl", "data.frame");
+  ret2.attr("class") = CharacterVector::create("tbl_df", "tbl", "data.frame");
 
   return(List::create(ret1, ret2));
 

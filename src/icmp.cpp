@@ -60,7 +60,7 @@ DataFrame get_icmp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
 
   }
 
-  return DataFrame::create(_["num"] = num,
+  DataFrame ret1 = DataFrame::create(_["num"] = num,
                            _["tv_sec"] = tssec,
                            _["tv_usec"] = tsusec,
                            _["src"] = src,
@@ -72,5 +72,9 @@ DataFrame get_icmp_layer(Rcpp::XPtr< std::vector<Crafter::Packet*> > pcap) {
                            _["code"] = code,
                            _["chksum"] = chksum,
                            _["stringsAsFactors"] = false);
+
+  ret1.attr("class") = CharacterVector::create("tbl_df", "tbl", "data.frame");
+
+  return(ret1);
 
 }

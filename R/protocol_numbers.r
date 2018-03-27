@@ -140,4 +140,4 @@ protocol_numbers <- structure(list(protocol = c("0", "1", "2", "3", "4", "5", "6
     "[RFC5840]", "[RFC5858]", "[Internet_Assigned_Numbers_Authority]",
     "[RFC3692]", "[RFC3692]", "[Internet_Assigned_Numbers_Authority]"
     )), .Names = c("protocol", "protocol_name", "description", "ipv6_extension_header",
-"reference"), class = "data.frame", row.names = c(NA, -148L))
+"reference"), class = c("tbl_df", "tbl", "data.frame"), row.names = c(NA, -148L))
