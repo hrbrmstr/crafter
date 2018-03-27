@@ -53,4 +53,3 @@ ncap$get_payload(7119)
 \author{
 Bob Rudis (@hrbrmstr)
 }
-
